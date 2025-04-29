@@ -3672,6 +3672,7 @@ class TestZarrDictStore(ZarrBase):
         encoding = {
             "var1": {
                 "chunk_key_encoding": V2ChunkKeyEncoding(separator="/").to_dict(),
+                "chunks": (2, 2),
             }
         }
 
@@ -3681,7 +3682,7 @@ class TestZarrDictStore(ZarrBase):
 
             # Verify the chunk keys in store use the slash separator
             if not has_zarr_v3:
-                chunk_keys = [k for k in store.keys() if k.startswith("var.1/")]
+                chunk_keys = [k for k in store.keys() if k.startswith("var1/")]
                 assert len(chunk_keys) > 0
                 for key in chunk_keys:
                     assert "/" in key
@@ -3691,7 +3692,7 @@ class TestZarrDictStore(ZarrBase):
             with xr.open_zarr(store) as actual:
                 assert_identical(original, actual)
                 # Verify chunks are preserved
-                assert actual["var.1"].encoding["chunks"] == (2, 2)
+                assert actual["var1"].encoding["chunks"] == (2, 2)
 
 
 @requires_zarr
