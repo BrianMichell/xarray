@@ -635,6 +635,7 @@ class ZarrStore(AbstractWritableDataStore):
         "_write_empty",
         "_write_region",
         "zarr_group",
+        "chunk_key_encoding",
     )
 
     @classmethod
